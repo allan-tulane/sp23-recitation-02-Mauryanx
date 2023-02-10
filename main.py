@@ -61,14 +61,19 @@ def span_calc(n, a, b, f):
 	Returns: the value of W(n).
 	"""
 	# TODO
-  return max(work_calc(i, a, b, f) for i in range(1, n+1))	pass
-
+if n <= 1:
+        return 0
+    else:
+        return max(span_calc(n/b, a, b, f), f(n)) + 1
 
 def test_work():
 	""" done. """
-	assert work_calc(10, 2, 2,lambda n: 1) == #TODO
-	assert work_calc(20, 1, 2, lambda n: n*n) == #TODO
-	assert work_calc(30, 3, 2, lambda n: n) == #TODO
+  assert work_calc(10, 2, 2, lambda n: 1) == 15
+	assert work_calc(20, 3, 2, lambda n: n*n) == 886
+	assert work_calc(30, 4, 2, lambda n: n) == 465
+	assert work_calc(100, 3, 2, lambda n: n*n*n) == 61100
+	assert work_calc(250, 2, 3, lambda n: n*n) == 20001
+	assert work_calc(500, 4, 5, lambda n: n) == 107151
 
 def compare_work(work_fn1, work_fn2, sizes=[10, 20, 50, 100, 1000, 5000, 10000]):
 	"""
@@ -102,10 +107,46 @@ def test_compare_work():
 	# functions taht can be passed to compare_work
     
 	# create work_fn1
-	# create work_fn2
+  # create work_fn1
+  def work_fn1(n):
+    return n**2
 
-    res = compare_work(work_fn1, work_fn2)
+	# create work_fn2
+  def work_fn2(n):
+    return n**3
+
+  res = compare_work(work_fn1, work_fn2)
 	print(res)
 
 def test_compare_span():
 	# TODO
+
+# Define the input values for n to be used in the comparison
+    inputs = [10, 100, 1000]
+
+    # Define the span functions to be compared
+    span_fn1 = lambda n: n
+    span_fn2 = lambda n: n ** 2
+
+    # Call compare_span to compare the span functions
+    res = compare_span(span_fn1, span_fn2, inputs)
+    print(res)
+
+
+def compare_span(span_fn1, span_fn2, n_values):
+    """
+    Compare the values of two span functions for different values of n
+
+    Params:
+    span_fn1.......The first span function to compare
+    span_fn2.......The second span function to compare
+    n_values.......A list of values of n to compare the span functions for
+  
+  Returns:
+    A tuple containing two lists:
+    The first list contains the values of the first span function for each value       of n
+    The second list contains the values of the second span function for each value     of n
+    """
+  results1 = [span_fn1(n) for n in n_values]
+  results2 = [span_fn2(n) for n in n_values]
+  return (results1, results2)
